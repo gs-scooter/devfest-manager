@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { EventCard } from './event-card';
 import { SearchBar } from './search-bar';
+import { EventsService } from '../../core/events.service';
 
 @Component({
   selector: 'app-event-list',
@@ -12,28 +13,43 @@ import { SearchBar } from './search-bar';
       Searching for: {{ searchQuery() }}
     </div>
 
-    <!-- TODO Mod 2: Wrap in @if (events.isLoading()) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- TODO Mod 2: Use @for to iterate over resource -->
+    @if (events.isLoading()) {
+      <div class="text-center py-12 text-gray-500 animate-pulse">Loading events...</div>
+    } @else {
+      <!-- TODO Mod 2: Wrap in @if (events.isLoading()) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- TODO Mod 2: Use @for to iterate over resource -->
 
-      <!-- Static Placeholders for initial verify -->
-      <app-event-card
-        title="Angular Keynote"
-        image="/images/angular-keynote.png"
-        date="2026-03-01T09:00:00.000Z"
-        (delete)="console.log('Delete clicked')"
-      />
-      <app-event-card
-        title="Signals Deep Dive"
-        image="/images/signals-deep-dive.png"
-        (delete)="console.log('Delete Clicked!')"
-      />
-      <!-- <app-event-card /> -->
-    </div>
+        @if (events.hasValue()) {
+          @for (event of events.value(); track $index) {
+            <app-event-card
+              [title]="event.title"
+              [image]="event.image"
+              [date]="event.date"
+              (delete)="deleteEvent(event.id)"
+            />
+          } @empty {
+            <p class="col-span-3 text-center text-gray-500">No events found.</p>
+          }
+        }
+      </div>
+    }
   `,
 })
 export class EventList {
-  // TODO Mod 2: Inject Service and use resource()
-  public console = console;
+  readonly eventsService = inject(EventsService);
   public searchQuery = signal('');
+  readonly events = this.eventsService.getEventsResource(this.searchQuery);
+
+  public deleteEvent(id: string) {
+    this.eventsService.deleteEvent(id).subscribe({
+      next: () => {
+        this.events.reload();
+      },
+      error: (e) => {
+        console.error('Delete event failed.', e);
+        alert('Could not delete event');
+      },
+    });
+  }
 }
