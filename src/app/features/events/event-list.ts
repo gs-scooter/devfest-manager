@@ -23,6 +23,7 @@ import { EventsService } from '../../core/events.service';
         @if (events.hasValue()) {
           @for (event of events.value(); track $index) {
             <app-event-card
+              [id]="event.id"
               [title]="event.title"
               [image]="event.image"
               [date]="event.date"

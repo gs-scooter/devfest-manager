@@ -13,6 +13,13 @@ export class EventsService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
+  public getEventResource(id: Signal<string>) {
+    return httpResource<DevFestEvent>(() => {
+      const eventId = id();
+      return `${this.apiUrl}/${eventId}`;
+    });
+  }
+
   public getEventsResource(query: Signal<string>) {
     return httpResource<DevFestEvent[]>(() => {
       const q = query();
