@@ -1,12 +1,13 @@
 import { HttpClient, httpResource } from '@angular/common/http';
 import { inject, Injectable, Signal } from '@angular/core';
 import { DevFestEvent } from '../models/event.model';
+import { API_URL } from './tokens';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EventsService {
-  private apiUrl = 'http://localhost:3000/events';
+  private apiUrl = `${inject(API_URL)}/events`;
   private http = inject(HttpClient);
 
   public createEvent(event: Omit<DevFestEvent, 'id'>) {
