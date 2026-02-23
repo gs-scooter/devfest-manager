@@ -9,6 +9,10 @@ export class EventsService {
   private apiUrl = 'http://localhost:3000/events';
   private http = inject(HttpClient);
 
+  public createEvent(event: Omit<DevFestEvent, 'id'>) {
+    return this.http.post<DevFestEvent>(this.apiUrl, event);
+  }
+
   public deleteEvent(id: string) {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
