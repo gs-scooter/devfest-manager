@@ -1,17 +1,20 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { Component, computed, input, linkedSignal, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-event-card',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, NgOptimizedImage],
   template: `
     <div
       class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
     >
       <div class="relative h48 w-full bg-gray-200">
         <img
-          [src]="image()"
+          [ngSrc]="image().replace('/images', '')"
+          width="500"
+          height="200"
+          priority
           alt="Event Thumbnail"
           class="object-cover w-full h-full max-h-full max-w-full"
         />
