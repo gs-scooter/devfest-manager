@@ -8,6 +8,11 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { routes } from './app.routes';
 import { API_URL } from './core/tokens';
 import { provideImageKitLoader } from '@angular/common';
+import {
+  provideClientHydration,
+  withEventReplay,
+  withIncrementalHydration,
+} from '@angular/platform-browser';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,5 +29,6 @@ export const appConfig: ApplicationConfig = {
     },
 
     provideImageKitLoader('https://ik.imagekit.io/mqva8bh9c/'),
+    provideClientHydration(withIncrementalHydration()),
   ],
 };
