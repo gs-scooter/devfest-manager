@@ -5,6 +5,8 @@ import { RouterLink } from '@angular/router';
 import { CartService } from '../../core/cart.service';
 import { TabGroup } from '../../shared/tabs/tab-group';
 import { Tab } from '../../shared/tabs/tab';
+import { catchError, delay, exhaustMap, mergeMap, of, Subject, throwError } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-event-details',
