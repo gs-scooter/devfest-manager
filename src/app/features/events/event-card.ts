@@ -54,13 +54,11 @@ import { ClickLogger } from '../../shared/directives/click-logger';
         <div class="flex justify-between items-center mt-4">
           <!-- TODO Mod 1: Add Derived State (Like Button) -->
           <button
-            appClickLogger
-            eventName="like_button"
             (click)="toggleFavorite()"
             class="text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
             [class.text-red-500]="isFavorite()"
           >
-            {{ isFavorite() ? '❤️' : '♡' }} Like
+            {{ isFavorite() ? '♥' : '♡' }} Like
           </button>
 
           <!-- TODO Mod 1: Add Output -->
@@ -85,11 +83,11 @@ import { ClickLogger } from '../../shared/directives/click-logger';
 })
 export class EventCard {
   readonly id = input.required<string>();
-  readonly title = input.required<string>();
-  readonly image = input.required<string>();
-  readonly date = input<string>();
-  readonly initialLike = input(false);
-  readonly delete = output();
+  title = input.required<string>();
+  image = input.required<string>();
+  date = input<string>();
+  initialLike = input(false);
+  delete = output();
 
   public daysUntil = computed(() => {
     const eventDate = this.date();

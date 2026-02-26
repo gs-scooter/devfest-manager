@@ -1,4 +1,4 @@
-import { Directive, input } from '@angular/core';
+import { Directive, Input } from '@angular/core';
 
 @Directive({
   selector: '[appClickLogger]',
@@ -7,9 +7,9 @@ import { Directive, input } from '@angular/core';
   },
 })
 export class ClickLogger {
-  readonly eventName = input<string>('unknown');
+  @Input() eventName: string = 'unknown';
 
   onClick() {
-    console.log('[Analytics] Card Clicked: ', this.eventName());
+    console.log('[Analytics] Card Clicked: ', this.eventName);
   }
 }
