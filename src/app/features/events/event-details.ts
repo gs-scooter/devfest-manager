@@ -7,6 +7,7 @@ import { TabGroup } from '../../shared/tabs/tab-group';
 import { Tab } from '../../shared/tabs/tab';
 import { catchError, delay, exhaustMap, mergeMap, of, Subject, throwError } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CartStore } from '../../core/cart.store';
 
 @Component({
   selector: 'app-event-details',
@@ -106,9 +107,10 @@ Hydration Behavior: The browser downloads the JS for this block ONLY when it ent
 
             <button
               (click)="addTicket()"
-              class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 shadow-lg transition"
+              [disabled]="cartStore.isPending()"
+              class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 shadow-lg transition disabled:opacity-50"
             >
-              Buy Tickets
+              {{ cartStore.isPending() ? 'Processing...' : 'Buy Tickets' }}
             </button>
           </div>
         </div>
@@ -120,9 +122,11 @@ export class EventDetails {
   readonly id = input.required<string>();
   readonly eventsService = inject(EventsService);
   readonly eventResource = this.eventsService.getEventResource(this.id);
-  readonly cartService = inject(CartService);
+  // readonly cartService = inject(CartService);
+  readonly cartStore = inject(CartStore);
 
   addTicket() {
-    this.cartService.addTicket(this.id());
+    // this.cartService.addTicket(this.id());
+    this.cartStore.addToCart({ eventId: this.id() });
   }
 }
